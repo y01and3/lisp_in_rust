@@ -1,14 +1,9 @@
+use super::real::Real;
 use crate::lisp::eval::expr::Eql;
 
 pub enum Number {
     Real(Real),
     Complex,
-}
-
-pub enum Real {
-    Int,
-    Float,
-    Ratio,
 }
 
 pub trait Arith {

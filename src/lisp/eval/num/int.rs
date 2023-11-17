@@ -48,3 +48,12 @@ impl Compare for Int {
         self.0 > rhs.0
     }
 }
+
+impl Int {
+    pub fn new(n: i64) -> Self {
+        Int(n)
+    }
+    pub fn value(&self) -> i64 {
+        self.0
+    }
+}
