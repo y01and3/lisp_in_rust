@@ -48,3 +48,12 @@ impl Compare for Float {
         self.0 > rhs.0
     }
 }
+
+impl Float {
+    pub fn new(n: f64) -> Self {
+        Float(n)
+    }
+    pub fn value(&self) -> f64 {
+        self.0
+    }
+}

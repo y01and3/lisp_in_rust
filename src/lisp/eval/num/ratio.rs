@@ -79,3 +79,9 @@ impl Ratio {
         }
     }
 }
+
+impl Ratio {
+    pub fn value(&self) -> f64 {
+        self.numerator as f64 / self.denominator as f64
+    }
+}
