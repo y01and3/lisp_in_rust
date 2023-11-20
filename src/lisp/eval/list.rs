@@ -1,9 +1,9 @@
 use super::expr::Expr;
-use std::{fmt::Display, rc::Rc};
+use std::fmt::Display;
 
 pub struct List {
     data: Expr,
-    pointer: Option<Rc<List>>,
+    pointer: Option<Box<List>>,
 }
 
 impl List {
@@ -28,13 +28,13 @@ pub fn cons(obj1: Expr, obj2: Expr) -> List {
     let mut list = List::new(obj1);
     match obj2 {
         Expr::List(cdr) => {
-            list.pointer = Some(Rc::clone(&cdr));
+            list.pointer = Some(cdr);
         }
         Expr::Nil => {
             list.pointer = None;
         }
         _ => {
-            list.pointer = Some(Rc::new(List::new(obj2)));
+            list.pointer = Some(Box::new(List::new(obj2)));
         }
     }
     list
