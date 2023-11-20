@@ -18,7 +18,7 @@ impl Display for Expr {
             Expr::Symbol(s) => write!(f, "{}", s),
             Expr::Number(n) => write!(f, "{}", n),
             Expr::List(l) => write!(f, "{}", **l),
-            Expr::Nil => write!(f, "nil"),
+            Expr::Nil => write!(f, "NIL"),
         }
     }
 }
