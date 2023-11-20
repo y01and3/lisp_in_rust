@@ -1,9 +1,16 @@
 use super::real::Real;
 use crate::lisp::eval::expr::Eql;
+use std::fmt::Display;
 
 pub enum Number {
     Real(Real),
     Complex,
+}
+
+impl Display for Number {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        write!(f, "{}", self)
+    }
 }
 
 pub trait Arith {
