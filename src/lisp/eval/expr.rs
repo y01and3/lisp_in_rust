@@ -1,9 +1,9 @@
-use super::num::number::Number;
+use super::{list::List, num::number::Number};
 
 pub enum Expr {
     Symbol(String),
     Number(Number),
-    List(Vec<Expr>),
+    List(List),
 }
 
 pub trait Eql {
