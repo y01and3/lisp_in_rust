@@ -19,6 +19,9 @@ impl List {
     pub fn cdr(&self) -> Option<&List> {
         self.pointer.as_ref().map(|x| &**x)
     }
+    pub fn equal(&self, rhs: List) -> bool{
+        self.to_string() == rhs.to_string()
+    }
 }
 
 pub fn cons(obj1: Expr, obj2: Expr) -> List {
