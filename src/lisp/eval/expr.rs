@@ -1,10 +1,10 @@
 use super::{list::List, num::number::Number};
-use std::fmt::Display;
+use std::{fmt::Display, rc::Rc};
 
 pub enum Expr {
     Symbol(String),
     Number(Number),
-    List(Box<List>),
+    List(Rc<List>),
     Nil,
 }
 
