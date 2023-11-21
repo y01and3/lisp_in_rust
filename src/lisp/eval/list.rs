@@ -29,7 +29,7 @@ pub fn cons(obj1: Expr, obj2: Expr) -> List {
     let mut list = List::new(obj1);
     match obj2 {
         Expr::List(cdr) => {
-            list.pointer = Some(cdr);
+            list.pointer = Some(cdr.clone());
         }
         Expr::Nil => {
             list.pointer = None;
