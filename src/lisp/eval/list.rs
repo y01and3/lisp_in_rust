@@ -1,6 +1,7 @@
 use super::expr::Expr;
 use std::fmt::Display;
 
+#[derive(Clone)]
 pub struct List {
     data: Expr,
     pointer: Option<Box<List>>,

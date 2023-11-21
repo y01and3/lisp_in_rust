@@ -2,6 +2,7 @@ use super::number::{Arith, Compare, Zero};
 use crate::lisp::eval::expr::Eql;
 use std::fmt::Display;
 
+#[derive(Clone)]
 pub struct Int(i64);
 
 impl Arith for Int {

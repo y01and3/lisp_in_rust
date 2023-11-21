@@ -2,6 +2,7 @@ use super::number::{Arith, Zero};
 use crate::lisp::eval::expr::Eql;
 use std::fmt::Display;
 
+#[derive(Clone)]
 pub struct Complex {
     real: f64,
     imaginary: f64,

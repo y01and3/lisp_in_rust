@@ -1,10 +1,11 @@
-use super::real::Real;
+use super::{real::Real, complex::Complex};
 use crate::lisp::eval::expr::Eql;
 use std::fmt::Display;
 
+#[derive(Clone)]
 pub enum Number {
     Real(Real),
-    Complex,
+    Complex(Complex),
 }
 
 impl Display for Number {

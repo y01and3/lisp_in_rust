@@ -1,5 +1,6 @@
 use super::{float::Float, int::Int, ratio::Ratio};
 
+#[derive(Clone)]
 pub enum Real {
     Int(Int),
     Float(Float),

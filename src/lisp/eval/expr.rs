@@ -1,6 +1,7 @@
 use super::{list::List, num::number::Number};
 use std::fmt::Display;
 
+#[derive(Clone)]
 pub enum Expr {
     Symbol(String),
     Number(Number),
