@@ -54,8 +54,8 @@ impl Display for List {
                 }
             }
         }
-        display.pop();
         display.push(')');
+        display = display.replace(". )", ")");
 
         write!(f, "{}", display)
     }
