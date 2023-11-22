@@ -50,7 +50,7 @@ impl Display for List {
                     now = &**next;
                 }
                 other => {
-                    display.push_str(&(". ".to_string() + &other.to_string()));
+                    display.push_str(&(" . ".to_string() + &other.to_string()));
                     break;
                 }
             }
