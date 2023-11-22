@@ -1,10 +1,21 @@
 use super::{float::Float, int::Int, ratio::Ratio};
+use std::fmt::Display;
 
 #[derive(Clone)]
 pub enum Real {
     Int(Int),
     Float(Float),
     Ratio(Ratio),
+}
+
+impl Display for Real {
+    fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        match self {
+            Real::Int(i) => write!(f, "{}", i),
+            Real::Float(float) => write!(f, "{}", float),
+            Real::Ratio(r) => write!(f, "{}", r),
+        }
+    }
 }
 
 impl Real {

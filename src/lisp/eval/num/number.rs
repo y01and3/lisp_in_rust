@@ -10,7 +10,10 @@ pub enum Number {
 
 impl Display for Number {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(f, "{}", self)
+        match self {
+            Number::Complex(complex) => write!(f, "{}", complex),
+            Number::Real(real) => write!(f, "{}", real),
+        }
     }
 }
 
