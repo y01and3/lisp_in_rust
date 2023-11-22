@@ -45,7 +45,7 @@ impl Display for List {
         while let Some(next) = now.cdr() {
             match next {
                 Expr::List(next) => {
-                    display.push_str(&*next.to_string());
+                    display.push_str(&*next.car().unwrap().to_string());
                     now = &**next;
                 }
                 other => {
