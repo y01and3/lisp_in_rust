@@ -40,11 +40,12 @@ impl Display for List {
             Some(car) => display.push_str(&car.to_string()),
             None => display.push_str("NIL"),
         }
-        display.push(' ');
+
         let mut now = self;
         while let Some(next) = now.cdr() {
             match next {
                 Expr::List(next) => {
+                    display.push(' ');
                     display.push_str(&*next.car().unwrap().to_string());
                     now = &**next;
                 }
