@@ -8,9 +8,9 @@ pub struct List {
 }
 
 impl List {
-    pub fn new(data: Expr) -> Self {
+    pub fn new(data: Option<Expr>) -> Self {
         List {
-            car: Some(Rc::new(data)),
+            car: data.map_or(None, |data| Some(Rc::new(data))),
             cdr: None,
         }
     }
@@ -26,7 +26,7 @@ impl List {
 }
 
 pub fn cons(obj1: Expr, obj2: Expr) -> Expr {
-    let mut list = List::new(obj1);
+    let mut list = List::new(Some(obj1));
     list.cdr = Some(Rc::new(obj2));
     Expr::List(Rc::new(list))
 }
@@ -36,17 +36,14 @@ impl Display for List {
         let mut display = String::new();
 
         display.push('(');
-        match self.car() {
-            Some(car) => display.push_str(&car.to_string()),
-            None => display.push_str("NIL"),
-        }
+        display.push_str(&*self.car().map_or("NIL".to_string(), |x| x.to_string()));
 
         let mut now = self;
         while let Some(next) = now.cdr() {
             match next {
                 Expr::List(next) => {
                     display.push(' ');
-                    display.push_str(&*next.car().unwrap().to_string());
+                    display.push_str(&*next.car().map_or("NIL".to_string(), |x| x.to_string()));
                     now = &**next;
                 }
                 other => {
@@ -61,4 +58,3 @@ impl Display for List {
         write!(f, "{}", display)
     }
 }
- 
