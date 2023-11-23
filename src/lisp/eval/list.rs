@@ -8,6 +8,10 @@ pub struct List {
 }
 
 impl List {
+    pub const NIL: List = List {
+        car: None,
+        cdr: None,
+    };
     pub fn new(data: Option<Expr>) -> Self {
         List {
             car: data.map_or(None, |data| Some(Rc::new(data))),
@@ -25,10 +29,23 @@ impl List {
     }
 }
 
-pub fn cons(obj1: Expr, obj2: Expr) -> Expr {
-    let mut list = List::new(Some(obj1));
-    list.cdr = Some(Rc::new(obj2));
+pub fn cons(obj1: Option<Expr>, obj2: Option<Expr>) -> Expr {
+    let mut list = List::new(obj1);
+    list.cdr = obj2.map(|x| Rc::new(x));
     Expr::List(Rc::new(list))
+}
+
+impl Iterator for List {
+    type Item = Expr;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let now = self.car.as_ref().map(|x| x.as_ref().clone());
+        *self = self.cdr().map_or(List::new(None), |x| match x.clone() {
+            Expr::List(l) => l.as_ref().clone(),
+            other => List::new(Some(other)),
+        });
+        now
+    }
 }
 
 impl Display for List {
@@ -36,14 +53,14 @@ impl Display for List {
         let mut display = String::new();
 
         display.push('(');
-        display.push_str(&*self.car().map_or("NIL".to_string(), |x| x.to_string()));
+        display.push_str(&*self.car().map_or("".to_string(), |x| x.to_string()));
 
         let mut now = self;
         while let Some(next) = now.cdr() {
             match next {
                 Expr::List(next) => {
                     display.push(' ');
-                    display.push_str(&*next.car().map_or("NIL".to_string(), |x| x.to_string()));
+                    display.push_str(&*next.car().map_or("".to_string(), |x| x.to_string()));
                     now = &**next;
                 }
                 other => {
@@ -53,8 +70,7 @@ impl Display for List {
             }
         }
         display.push(')');
-        display = display.replace(" )", ")");
 
-        write!(f, "{}", display)
+        write!(f, "{}", display.replace("()", "NIL"))
     }
 }
