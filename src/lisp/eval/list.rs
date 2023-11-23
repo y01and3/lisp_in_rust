@@ -25,9 +25,9 @@ impl List {
     }
 }
 
-pub fn cons(obj1: Expr, obj2: Expr) -> Expr {
-    let mut list = List::new(Some(obj1));
-    list.cdr = Some(Rc::new(obj2));
+pub fn cons(obj1: Option<Expr>, obj2: Option<Expr>) -> Expr {
+    let mut list = List::new(obj1);
+    list.cdr = obj2.map(|x| Rc::new(x));
     Expr::List(Rc::new(list))
 }
 
