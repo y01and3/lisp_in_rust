@@ -31,6 +31,19 @@ pub fn cons(obj1: Option<Expr>, obj2: Option<Expr>) -> Expr {
     Expr::List(Rc::new(list))
 }
 
+impl Iterator for List {
+    type Item = Expr;
+
+    fn next(&mut self) -> Option<Self::Item> {
+        let now = self.car.as_ref().map(|x| x.as_ref().clone()).take();
+        *self = self.cdr().map_or(List::new(None), |x| match x.clone() {
+            Expr::List(l) => l.as_ref().clone(),
+            other => List::new(Some(other)),
+        });
+        now
+    }
+}
+
 impl Display for List {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         let mut display = String::new();
