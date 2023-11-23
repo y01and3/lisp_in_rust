@@ -72,5 +72,14 @@ impl Display for List {
         display.push(')');
 
         write!(f, "{}", display.replace("()", "NIL"))
+
+        // a fmt using Iterator but there is a problem that it dosen't have a dot in the dotted list
+        // let mut display = String::new();
+        // display.push('(');
+        // for i in self.clone().into_iter() {
+        //     display.push_str(&(' '.to_string() + &i.to_string()));
+        // }
+        // display.push(')');
+        // write!(f, "{}", display.replace("( ", "(").replace("()", "NIL"))
     }
 }
