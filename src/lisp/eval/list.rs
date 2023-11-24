@@ -34,9 +34,9 @@ impl Iterator for List {
 
     fn next(&mut self) -> Option<Self::Item> {
         let now = self.car.as_ref().map(|x| x.as_ref().clone());
-        *self = self.cdr().map_or(List::new(None), |x| match x.clone() {
-            Expr::List(l) => l.as_ref().clone(),
-            other => List::new(Some(other)),
+        *self = self.cdr().map_or(List::NIL, |x| match x.clone() {
+            Expr::List(l) => l.clone(),
+            other => List::new(Some(other), None),
         });
         now
     }
@@ -55,7 +55,7 @@ impl Display for List {
                 Expr::List(next) => {
                     display.push(' ');
                     display.push_str(&*next.car().map_or("".to_string(), |x| x.to_string()));
-                    now = &**next;
+                    now = &next;
                 }
                 other => {
                     display.push_str(&(" . ".to_string() + &other.to_string()));

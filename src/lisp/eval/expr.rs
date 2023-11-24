@@ -1,11 +1,11 @@
 use super::{list::List, num::number::Number};
-use std::{fmt::Display, rc::Rc};
+use std::fmt::Display;
 
 #[derive(Clone)]
 pub enum Expr {
     Symbol(String),
     Number(Number),
-    List(Rc<List>),
+    List(List),
 }
 
 pub trait Eql {
@@ -17,7 +17,7 @@ impl Display for Expr {
         match self {
             Expr::Symbol(s) => write!(f, "{}", s),
             Expr::Number(n) => write!(f, "{}", n),
-            Expr::List(l) => write!(f, "{}", **l),
+            Expr::List(l) => write!(f, "{}", l),
         }
     }
 }
