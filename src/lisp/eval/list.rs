@@ -12,10 +12,10 @@ impl List {
         car: None,
         cdr: None,
     };
-    pub fn new(data: Option<Expr>) -> Self {
+    pub fn new(lhs: Option<Expr>, rhs: Option<Expr>) -> Self {
         List {
-            car: data.map_or(None, |data| Some(Rc::new(data))),
-            cdr: None,
+            car: lhs.map_or(None, |data| Some(Rc::new(data))),
+            cdr: rhs.map_or(None, |data| Some(Rc::new(data))),
         }
     }
     pub fn car(&self) -> Option<&Expr> {
@@ -27,12 +27,6 @@ impl List {
     pub fn equal(&self, rhs: List) -> bool {
         self.to_string() == rhs.to_string()
     }
-}
-
-pub fn cons(obj1: Option<Expr>, obj2: Option<Expr>) -> Expr {
-    let mut list = List::new(obj1);
-    list.cdr = obj2.map(|x| Rc::new(x));
-    Expr::List(Rc::new(list))
 }
 
 impl Iterator for List {
