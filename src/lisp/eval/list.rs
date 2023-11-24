@@ -12,10 +12,10 @@ impl List {
         car: None,
         cdr: None,
     };
-    pub fn new(data: Option<Expr>) -> Self {
+    pub fn new(lhs: Option<Expr>, rhs: Option<Expr>) -> Self {
         List {
-            car: data.map_or(None, |data| Some(Rc::new(data))),
-            cdr: None,
+            car: lhs.map_or(None, |data| Some(Rc::new(data))),
+            cdr: rhs.map_or(None, |data| Some(Rc::new(data))),
         }
     }
     pub fn car(&self) -> Option<&Expr> {
@@ -29,20 +29,14 @@ impl List {
     }
 }
 
-pub fn cons(obj1: Option<Expr>, obj2: Option<Expr>) -> Expr {
-    let mut list = List::new(obj1);
-    list.cdr = obj2.map(|x| Rc::new(x));
-    Expr::List(Rc::new(list))
-}
-
 impl Iterator for List {
     type Item = Expr;
 
     fn next(&mut self) -> Option<Self::Item> {
         let now = self.car.as_ref().map(|x| x.as_ref().clone());
-        *self = self.cdr().map_or(List::new(None), |x| match x.clone() {
-            Expr::List(l) => l.as_ref().clone(),
-            other => List::new(Some(other)),
+        *self = self.cdr().map_or(List::NIL, |x| match x.clone() {
+            Expr::List(l) => l.clone(),
+            other => List::new(Some(other), None),
         });
         now
     }
@@ -61,7 +55,7 @@ impl Display for List {
                 Expr::List(next) => {
                     display.push(' ');
                     display.push_str(&*next.car().map_or("".to_string(), |x| x.to_string()));
-                    now = &**next;
+                    now = &next;
                 }
                 other => {
                     display.push_str(&(" . ".to_string() + &other.to_string()));
@@ -72,5 +66,14 @@ impl Display for List {
         display.push(')');
 
         write!(f, "{}", display.replace("()", "NIL"))
+
+        // a fmt using Iterator but there is a problem that it dosen't have a dot in the dotted list
+        // let mut display = String::new();
+        // display.push('(');
+        // for i in self.clone().into_iter() {
+        //     display.push_str(&(' '.to_string() + &i.to_string()));
+        // }
+        // display.push(')');
+        // write!(f, "{}", display.replace("( ", "(").replace("()", "NIL"))
     }
 }
