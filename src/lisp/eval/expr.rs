@@ -1,7 +1,7 @@
 use super::{list::List, num::number::Number};
 use std::fmt::Display;
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Expr {
     Symbol(String),
     Number(Number),
@@ -18,6 +18,27 @@ impl Display for Expr {
             Expr::Symbol(s) => write!(f, "{}", s),
             Expr::Number(n) => write!(f, "{}", n),
             Expr::List(l) => write!(f, "{}", l),
+        }
+    }
+}
+
+impl Expr {
+    pub fn symbol(&self) -> Option<&String> {
+        match self {
+            Expr::Symbol(s) => Some(s),
+            _ => None,
+        }
+    }
+    pub fn number(&self) -> Option<&Number> {
+        match self {
+            Expr::Number(n) => Some(n),
+            _ => None,
+        }
+    }
+    pub fn list(&self) -> Option<&List> {
+        match self {
+            Expr::List(l) => Some(l),
+            _ => None,
         }
     }
 }
