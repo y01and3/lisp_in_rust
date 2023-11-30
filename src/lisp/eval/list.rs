@@ -83,3 +83,105 @@ impl Display for List {
         // write!(f, "{}", display.replace("( ", "(").replace("()", "NIL"))
     }
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use crate::lisp::eval::num::{int::Int, number::Number, real::Real};
+
+    #[test]
+    fn test_list_car_cdr() {
+        let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+        let list = Expr::List(List::new(Some(num.clone()), None));
+        let listf = List::new(
+            Some(Expr::List(List::NIL)),
+            Some(Expr::List(List::new(
+                Some(Expr::List(List::new(
+                    Some(Expr::List(List::NIL)),
+                    Some(Expr::List(List::new(Some(list.clone()), Some(num.clone())))),
+                ))),
+                Some(Expr::List(List::new(Some(num.clone()), Some(list.clone())))),
+            ))),
+        );
+        assert_eq!(listf.car(), Some(&Expr::List(List::NIL)));
+        assert_eq!(
+            listf.cdr(),
+            Some(&Expr::List(List::new(
+                Some(Expr::List(List::new(
+                    Some(Expr::List(List::NIL)),
+                    Some(Expr::List(List::new(Some(list.clone()), Some(num.clone())))),
+                ))),
+                Some(Expr::List(List::new(Some(num.clone()), Some(list.clone())))),
+            )))
+        );
+    }
+    #[test]
+    fn test_list_atom() {
+        let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+        let list = List::new(Some(num.clone()), Some(num.clone()));
+
+        assert_eq!(list.atom(), false);
+        assert_eq!(List::NIL.atom(), true);
+    }
+
+    #[test]
+    fn test_list_equal() {
+        let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+        let list = Expr::List(List::new(Some(num.clone()), None));
+        let listf = List::new(
+            Some(Expr::List(List::NIL)),
+            Some(Expr::List(List::new(
+                Some(Expr::List(List::new(
+                    Some(Expr::List(List::NIL)),
+                    Some(Expr::List(List::new(Some(list.clone()), Some(num.clone())))),
+                ))),
+                Some(Expr::List(List::new(Some(num.clone()), Some(list.clone())))),
+            ))),
+        );
+        assert_eq!(listf.equal(listf.clone()), true);
+        assert_eq!(listf.equal(List::NIL), false);
+        assert_eq!(listf.equal(List::new(Some(num.clone()), None)), false);
+        assert_eq!(List::NIL.equal(List::new(None, None)), true);
+    }
+
+    #[test]
+    fn test_list_iter() {
+        let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+        let list = Expr::List(List::new(Some(num.clone()), None));
+        let listf = List::new(
+            Some(Expr::List(List::NIL)),
+            Some(Expr::List(List::new(
+                Some(Expr::List(List::new(
+                    Some(Expr::List(List::NIL)),
+                    Some(Expr::List(List::new(Some(list.clone()), Some(num.clone())))),
+                ))),
+                Some(Expr::List(List::new(Some(num.clone()), Some(list.clone())))),
+            ))),
+        );
+        assert_eq!(
+            listf
+                .clone()
+                .into_iter()
+                .map(|x| x.to_string())
+                .collect::<Vec<String>>(),
+            vec!["NIL", "(NIL (1) . 1)", "1", "1"]
+        );
+    }
+
+    #[test]
+    fn test_list_display() {
+        let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+        let list = Expr::List(List::new(Some(num.clone()), None));
+        let listf = List::new(
+            Some(Expr::List(List::NIL)),
+            Some(Expr::List(List::new(
+                Some(Expr::List(List::new(
+                    Some(Expr::List(List::NIL)),
+                    Some(Expr::List(List::new(Some(list.clone()), Some(num.clone())))),
+                ))),
+                Some(Expr::List(List::new(Some(num.clone()), Some(list.clone())))),
+            ))),
+        );
+        assert_eq!(listf.to_string(), "(NIL (NIL (1) . 1) 1 1)");
+    }
+}
