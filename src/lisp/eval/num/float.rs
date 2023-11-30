@@ -2,7 +2,7 @@ use super::number::{Arith, Compare, Zero};
 use crate::lisp::eval::expr::Eql;
 use std::fmt::Display;
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Float(f64);
 
 impl Arith for Float {
