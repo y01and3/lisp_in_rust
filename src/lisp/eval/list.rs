@@ -25,13 +25,10 @@ impl List {
         self.cdr.as_ref().map(|x| &**x)
     }
     pub fn equal(&self, rhs: List) -> bool {
-        self.to_string() == rhs.to_string()
+        self.clone() == rhs.clone()
     }
     pub fn atom(&self) -> bool {
-        self.cdr().map_or(false, |x| match x {
-            Expr::List(_) => false,
-            _ => true,
-        })
+        self.equal(List::NIL)
     }
 }
 
