@@ -1,7 +1,7 @@
 use super::expr::Expr;
 use std::{fmt::Display, rc::Rc};
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct List {
     car: Option<Rc<Expr>>,
     cdr: Option<Rc<Expr>>,
