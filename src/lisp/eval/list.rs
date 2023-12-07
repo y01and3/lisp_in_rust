@@ -30,6 +30,39 @@ impl List {
     pub fn atom(&self) -> bool {
         self.equal(List::NIL)
     }
+    pub fn _nth(&self, n: i64) -> Option<Expr> {
+        let mut iterator = self.clone().into_iter();
+        iterator.nth(n as usize)
+    }
+    pub fn nthcdr(&self, n: i64) -> Option<Expr> {
+        let mut now = self.clone();
+        for i in 0..n {
+            match now.cdr() {
+                Some(expr) => match expr {
+                    Expr::List(l) => now = l.clone(),
+                    other => {
+                        if i == n - 1 {
+                            return Some(other.clone());
+                        } else {
+                            return None;
+                        }
+                    }
+                },
+                None => return None,
+            }
+        }
+        Some(Expr::List(now.clone()))
+    }
+    pub fn _last(&self) -> List {
+        let mut now = self.clone();
+        while let Some(next) = now.cdr() {
+            match next {
+                Expr::List(l) => now = l.clone(),
+                _ => break,
+            }
+        }
+        now.clone()
+    }
 }
 
 impl Iterator for List {
@@ -139,6 +172,52 @@ mod tests {
         assert_eq!(listf.equal(List::NIL), false);
         assert_eq!(listf.equal(List::new(Some(num.clone()), None)), false);
         assert_eq!(List::NIL.equal(List::new(None, None)), true);
+    }
+
+    #[test]
+    fn test_nth() {
+        let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+        let list = Expr::List(List::new(Some(num.clone()), None));
+        let listf = List::new(
+            Some(Expr::List(List::NIL)),
+            Some(Expr::List(List::new(
+                Some(Expr::List(List::new(Some(num.clone()), None))),
+                Some(Expr::List(List::new(Some(num.clone()), Some(list.clone())))),
+            ))),
+        );
+        assert_eq!(listf._nth(1), Some(list));
+    }
+
+    #[test]
+    fn test_nthcdr() {
+        let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+        let list = Expr::List(List::new(Some(num.clone()), None));
+        let listf = List::new(
+            Some(Expr::List(List::NIL)),
+            Some(Expr::List(List::new(
+                Some(Expr::List(List::new(Some(num.clone()), None))),
+                Some(Expr::List(List::new(Some(num.clone()), Some(list.clone())))),
+            ))),
+        );
+        let listr = Some(Expr::List(List::new(
+            Some(Expr::List(List::new(Some(num.clone()), None))),
+            Some(Expr::List(List::new(Some(num.clone()), Some(list.clone())))),
+        )));
+        assert_eq!(listf.nthcdr(1), listr);
+    }
+
+    #[test]
+    fn test_last() {
+        let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+        let list = Expr::List(List::new(Some(num.clone()), None));
+        let listf = List::new(
+            Some(Expr::List(List::NIL)),
+            Some(Expr::List(List::new(
+                Some(Expr::List(List::new(Some(num.clone()), None))),
+                Some(Expr::List(List::new(Some(num.clone()), Some(list.clone())))),
+            ))),
+        );
+        assert_eq!(listf._last(), List::new(Some(num.clone()), None));
     }
 
     #[test]
