@@ -74,6 +74,9 @@ impl List {
         });
         item
     }
+    pub fn length(&self) -> i64 {
+        self.clone().into_iter().count() as i64
+    }
 }
 
 impl Iterator for List {
@@ -240,6 +243,23 @@ mod tests {
         assert_eq!(list, List::new(Some(num.clone()), Some(list_e.clone())));
         assert_eq!(list.pop(),Some(num.clone()));
         assert_eq!(list, List::new(Some(num.clone()), None));
+    }
+
+    #[test]
+    fn test_length() {
+        let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+        let list = Expr::List(List::new(Some(num.clone()), None));
+        let listf = List::new(
+            Some(Expr::List(List::NIL)),
+            Some(Expr::List(List::new(
+                Some(Expr::List(List::new(
+                    Some(Expr::List(List::NIL)),
+                    Some(Expr::List(List::new(Some(list.clone()), Some(num.clone())))),
+                ))),
+                Some(Expr::List(List::new(Some(num.clone()), Some(list.clone())))),
+            ))),
+        );
+        assert_eq!(listf.length(), 4);
     }
 
     #[test]
