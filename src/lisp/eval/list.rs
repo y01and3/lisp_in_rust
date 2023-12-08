@@ -63,6 +63,17 @@ impl List {
         }
         now.clone()
     }
+    pub fn push(&mut self, item: Option<Expr>) {
+        *self = List::new(item, Some(Expr::List(self.clone())));
+    }
+    pub fn pop(&mut self) -> Option<Expr> {
+        let item = self.car().map(|x| x.clone());
+        *self = self.cdr().map_or(List::NIL, |x| match x {
+            Expr::List(l) => l.clone(),
+            other => List::new(Some(other.clone()), None),
+        });
+        item
+    }
 }
 
 impl Iterator for List {
@@ -218,6 +229,17 @@ mod tests {
             ))),
         );
         assert_eq!(listf._last(), List::new(Some(num.clone()), None));
+    }
+
+    #[test]
+    fn test_stack() {
+        let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+        let mut list = List::new(Some(num.clone()), None);
+        let list_e = Expr::List(list.clone());
+        list.push(Some(num.clone()));
+        assert_eq!(list, List::new(Some(num.clone()), Some(list_e.clone())));
+        assert_eq!(list.pop(),Some(num.clone()));
+        assert_eq!(list, List::new(Some(num.clone()), None));
     }
 
     #[test]
