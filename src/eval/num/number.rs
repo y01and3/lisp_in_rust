@@ -1,5 +1,5 @@
 use super::{complex::Complex, real::Real};
-use crate::lisp::eval::expr::Eql;
+use crate::eval::expr::Eql;
 use std::fmt::Display;
 
 #[derive(Clone, Debug, PartialEq)]
