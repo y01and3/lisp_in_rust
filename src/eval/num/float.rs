@@ -1,9 +1,18 @@
-use super::number::{Arith, Compare, Zero};
+use super::{
+    number::{Arith, Compare, Zero},
+    real::Real,
+};
 use crate::eval::expr::Eql;
 use std::fmt::Display;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Float(f64);
+
+impl Real for Float {
+    fn to_float(&self) -> Float {
+        self.clone()
+    }
+}
 
 impl Arith for Float {
     fn add(&self, rhs: &Self) -> Self {

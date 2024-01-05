@@ -1,5 +1,7 @@
+use super::float::Float;
 use super::math::gcd::gcd;
 use super::number::{Arith, Compare, Zero};
+use super::real::Real;
 use crate::eval::expr::Eql;
 use std::fmt::Display;
 
@@ -7,6 +9,12 @@ use std::fmt::Display;
 pub struct Ratio {
     numerator: i64,
     denominator: i64,
+}
+
+impl Real for Ratio {
+    fn to_float(&self) -> Float {
+        Float::new(self.value() as f64)
+    }
 }
 
 impl Arith for Ratio {

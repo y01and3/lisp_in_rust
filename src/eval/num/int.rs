@@ -1,9 +1,19 @@
-use super::number::{Arith, Compare, Zero};
+use super::{
+    float::Float,
+    number::{Arith, Compare, Zero},
+    real::Real,
+};
 use crate::eval::expr::Eql;
 use std::fmt::Display;
 
 #[derive(Clone, Debug, PartialEq)]
 pub struct Int(i64);
+
+impl Real for Int {
+    fn to_float(&self) -> Float {
+        Float::new(self.0 as f64)
+    }
+}
 
 impl Arith for Int {
     fn add(&self, rhs: &Self) -> Self {

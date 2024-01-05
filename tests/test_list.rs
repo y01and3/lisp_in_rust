@@ -1,9 +1,9 @@
-use lisp_in_rust::eval::num::{int::Int, number::Number, real::Real};
+use lisp_in_rust::eval::num::{int::Int, number::Number};
 use lisp_in_rust::eval::{expr::Expr, list::List};
 
 #[test]
 fn test_list_car_cdr() {
-    let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+    let num = Expr::Number(Number::Int(Int::new(1)));
     let list = Expr::List(List::new(Some(num.clone()), None));
     let listf = List::new(
         Some(Expr::List(List::NIL)),
@@ -29,7 +29,7 @@ fn test_list_car_cdr() {
 }
 #[test]
 fn test_list_atom() {
-    let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+    let num = Expr::Number(Number::Int(Int::new(1)));
     let list = List::new(Some(num.clone()), Some(num.clone()));
 
     assert_eq!(list.atom(), false);
@@ -38,7 +38,7 @@ fn test_list_atom() {
 
 #[test]
 fn test_list_equal() {
-    let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+    let num = Expr::Number(Number::Int(Int::new(1)));
     let list = Expr::List(List::new(Some(num.clone()), None));
     let listf = List::new(
         Some(Expr::List(List::NIL)),
@@ -58,7 +58,7 @@ fn test_list_equal() {
 
 #[test]
 fn test_nth() {
-    let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+    let num = Expr::Number(Number::Int(Int::new(1)));
     let list = Expr::List(List::new(Some(num.clone()), None));
     let listf = List::new(
         Some(Expr::List(List::NIL)),
@@ -72,7 +72,7 @@ fn test_nth() {
 
 #[test]
 fn test_nthcdr() {
-    let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+    let num = Expr::Number(Number::Int(Int::new(1)));
     let list = Expr::List(List::new(Some(num.clone()), None));
     let listf = List::new(
         Some(Expr::List(List::NIL)),
@@ -90,7 +90,7 @@ fn test_nthcdr() {
 
 #[test]
 fn test_last() {
-    let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+    let num = Expr::Number(Number::Int(Int::new(1)));
     let list = Expr::List(List::new(Some(num.clone()), None));
     let listf = List::new(
         Some(Expr::List(List::NIL)),
@@ -104,7 +104,7 @@ fn test_last() {
 
 #[test]
 fn test_stack() {
-    let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+    let num = Expr::Number(Number::Int(Int::new(1)));
     let mut list = List::new(Some(num.clone()), None);
     let list_e = Expr::List(list.clone());
     list.push(Some(num.clone()));
@@ -115,7 +115,7 @@ fn test_stack() {
 
 #[test]
 fn test_length() {
-    let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+    let num = Expr::Number(Number::Int(Int::new(1)));
     let list = Expr::List(List::new(Some(num.clone()), None));
     let listf = List::new(
         Some(Expr::List(List::NIL)),
@@ -132,7 +132,7 @@ fn test_length() {
 
 #[test]
 fn test_list_iter() {
-    let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+    let num = Expr::Number(Number::Int(Int::new(1)));
     let list = Expr::List(List::new(Some(num.clone()), None));
     let listf = List::new(
         Some(Expr::List(List::NIL)),
@@ -156,7 +156,7 @@ fn test_list_iter() {
 
 #[test]
 fn test_list_display() {
-    let num = Expr::Number(Number::Real(Real::Int(Int::new(1))));
+    let num = Expr::Number(Number::Int(Int::new(1)));
     let list = Expr::List(List::new(Some(num.clone()), None));
     let listf = List::new(
         Some(Expr::List(List::NIL)),

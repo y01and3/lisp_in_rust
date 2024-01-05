@@ -1,18 +1,22 @@
-use super::{complex::Complex, real::Real};
+use super::{complex::Complex, float::Float, int::Int, ratio::Ratio};
 use crate::eval::expr::Eql;
 use std::fmt::Display;
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Number {
-    Real(Real),
+    Int(Int),
+    Float(Float),
+    Ratio(Ratio),
     Complex(Complex),
 }
 
 impl Display for Number {
     fn fmt(&self, f: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
         match self {
+            Number::Int(int) => write!(f, "{}", int),
+            Number::Float(float) => write!(f, "{}", float),
+            Number::Ratio(ratio) => write!(f, "{}", ratio),
             Number::Complex(complex) => write!(f, "{}", complex),
-            Number::Real(real) => write!(f, "{}", real),
         }
     }
 }
