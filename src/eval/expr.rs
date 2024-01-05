@@ -1,9 +1,9 @@
-use super::{list::List, num::number::Number};
+use super::{list::List, num::number::Number, symbol::Symbol};
 use std::fmt::Display;
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum Expr {
-    Symbol(String),
+    Symbol(Symbol),
     Number(Number),
     List(List),
 }
@@ -23,7 +23,7 @@ impl Display for Expr {
 }
 
 impl Expr {
-    pub fn symbol(&self) -> Option<&String> {
+    pub fn symbol(&self) -> Option<&Symbol> {
         match self {
             Expr::Symbol(s) => Some(s),
             _ => None,
