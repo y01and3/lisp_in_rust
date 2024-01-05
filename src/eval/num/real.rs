@@ -1,7 +1,7 @@
 use super::{float::Float, int::Int, ratio::Ratio};
 use std::fmt::Display;
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub enum Real {
     Int(Int),
     Float(Float),

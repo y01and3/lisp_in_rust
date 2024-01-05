@@ -1,8 +1,8 @@
 use super::number::{Arith, Compare, Zero};
-use crate::lisp::eval::expr::Eql;
+use crate::eval::expr::Eql;
 use std::fmt::Display;
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct Int(i64);
 
 impl Arith for Int {

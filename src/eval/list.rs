@@ -1,7 +1,7 @@
 use super::expr::Expr;
 use std::{fmt::Display, rc::Rc};
 
-#[derive(Clone)]
+#[derive(Clone, Debug, PartialEq)]
 pub struct List {
     car: Option<Rc<Expr>>,
     cdr: Option<Rc<Expr>>,
@@ -25,7 +25,57 @@ impl List {
         self.cdr.as_ref().map(|x| &**x)
     }
     pub fn equal(&self, rhs: List) -> bool {
-        self.to_string() == rhs.to_string()
+        self.clone() == rhs.clone()
+    }
+    pub fn atom(&self) -> bool {
+        self.equal(List::NIL)
+    }
+    pub fn nth(&self, n: i64) -> Option<Expr> {
+        let mut iterator = self.clone().into_iter();
+        Iterator::nth(&mut iterator, n as usize)
+    }
+    pub fn nthcdr(&self, n: i64) -> Option<Expr> {
+        let mut now = self.clone();
+        for i in 0..n {
+            match now.cdr() {
+                Some(expr) => match expr {
+                    Expr::List(l) => now = l.clone(),
+                    other => {
+                        if i == n - 1 {
+                            return Some(other.clone());
+                        } else {
+                            return None;
+                        }
+                    }
+                },
+                None => return None,
+            }
+        }
+        Some(Expr::List(now.clone()))
+    }
+    pub fn last(&self) -> List {
+        let mut now = self.clone();
+        while let Some(next) = now.cdr() {
+            match next {
+                Expr::List(l) => now = l.clone(),
+                _ => break,
+            }
+        }
+        now.clone()
+    }
+    pub fn push(&mut self, item: Option<Expr>) {
+        *self = List::new(item, Some(Expr::List(self.clone())));
+    }
+    pub fn pop(&mut self) -> Option<Expr> {
+        let item = self.car().map(|x| x.clone());
+        *self = self.cdr().map_or(List::NIL, |x| match x {
+            Expr::List(l) => l.clone(),
+            other => List::new(Some(other.clone()), None),
+        });
+        item
+    }
+    pub fn length(&self) -> i64 {
+        self.clone().into_iter().count() as i64
     }
 }
 
